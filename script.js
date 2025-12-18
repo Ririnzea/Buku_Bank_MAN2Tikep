@@ -17,10 +17,7 @@ class BankBookApp {
 
     initializeApp() {
         // Event listeners
-        document.getElementById('addEntryBtn').addEventListener('click', () => {
-            console.log('Add Entry button clicked');
-            this.openModal();
-        });
+        document.getElementById('addEntryBtn').addEventListener('click', () => this.openModal());
         document.getElementById('adminBtn').addEventListener('click', () => this.openAdminPanel());
         document.getElementById('printBtn').addEventListener('click', () => this.printTable());
         document.getElementById('transactionForm').addEventListener('submit', (e) => this.handleFormSubmit(e));
@@ -35,14 +32,12 @@ class BankBookApp {
             }
         });
 
+
         // Update current date
         this.updateCurrentDate();
     }
 
-    openAdminPanel() {
-        // Redirect to admin dashboard with parameter
-        window.location.href = 'admin.html?from=main';
-    }
+
 
     loadSampleData() {
         // Load from localStorage first
@@ -94,92 +89,7 @@ class BankBookApp {
         localStorage.setItem('bankBookTransactions', JSON.stringify(this.transactions));
     }
 
-    openModal(index = -1) {
-        console.log('Opening modal, index:', index);
-        const modal = document.getElementById('transactionModal');
-        const form = document.getElementById('transactionForm');
-        const title = document.getElementById('modalTitle');
-        
-        if (!modal) {
-            console.error('Modal element not found!');
-            return;
-        }
-        
-        console.log('Modal element found:', modal);
-        
-        this.currentEditIndex = index;
-        
-        if (index >= 0) {
-            // Edit mode
-            title.textContent = 'Edit Transaksi';
-            const transaction = this.transactions[index];
-            document.getElementById('date').value = transaction.date;
-            document.getElementById('bukti').value = transaction.bukti;
-            document.getElementById('uraian').value = transaction.uraian;
-            document.getElementById('kodeRekening').value = transaction.kodeRekening;
-            document.getElementById('penerimaan').value = transaction.penerimaan || '';
-            document.getElementById('pengeluaran').value = transaction.pengeluaran || '';
-        } else {
-            // Add mode
-            title.textContent = 'Tambah Transaksi';
-            form.reset();
-            // Set default date to today
-            document.getElementById('date').value = new Date().toISOString().split('T')[0];
-        }
-        
-        // Force show modal with inline styles
-        modal.style.display = 'block';
-        modal.style.position = 'fixed';
-        modal.style.zIndex = '9999';
-        modal.style.left = '0';
-        modal.style.top = '0';
-        modal.style.width = '100%';
-        modal.style.height = '100%';
-        modal.style.backgroundColor = 'rgba(0,0,0,0.5)';
-        
-        console.log('Modal should be visible now');
-    }
 
-    closeModal() {
-        document.getElementById('transactionModal').style.display = 'none';
-        this.currentEditIndex = -1;
-    }
-
-    handleFormSubmit(e) {
-        e.preventDefault();
-        
-        const formData = {
-            date: document.getElementById('date').value,
-            bukti: document.getElementById('bukti').value,
-            uraian: document.getElementById('uraian').value,
-            kodeRekening: document.getElementById('kodeRekening').value,
-            penerimaan: parseFloat(document.getElementById('penerimaan').value) || 0,
-            pengeluaran: parseFloat(document.getElementById('pengeluaran').value) || 0
-        };
-
-        if (this.currentEditIndex >= 0) {
-            // Edit existing transaction
-            this.transactions[this.currentEditIndex] = formData;
-        } else {
-            // Add new transaction
-            this.transactions.push(formData);
-        }
-
-        // Sort transactions by date
-        this.transactions.sort((a, b) => new Date(a.date) - new Date(b.date));
-        
-        this.saveTransactions();
-        this.renderTable();
-        this.closeModal();
-    }
-
-    deleteTransaction(index) {
-        if (confirm('Apakah Anda yakin ingin menghapus transaksi ini?')) {
-            this.transactions.splice(index, 1);
-            this.saveTransactions();
-            this.renderTable();
-        }
-    }
 
     calculateSaldo() {
         let saldo = 0;
@@ -262,6 +172,80 @@ class BankBookApp {
             logoImg.style.display = 'block';
         } else {
             logoImg.style.display = 'none';
+        }
+    }
+
+    openAdminPanel() {
+        // Redirect to admin dashboard with parameter
+        window.location.href = 'admin.html?from=main';
+    }
+
+    openModal(index = -1) {
+        const modal = document.getElementById('transactionModal');
+        const form = document.getElementById('transactionForm');
+        const title = document.getElementById('modalTitle');
+        
+        this.currentEditIndex = index;
+        
+        if (index >= 0) {
+            // Edit mode
+            title.textContent = 'Edit Transaksi';
+            const transaction = this.transactions[index];
+            document.getElementById('date').value = transaction.date;
+            document.getElementById('bukti').value = transaction.bukti;
+            document.getElementById('uraian').value = transaction.uraian;
+            document.getElementById('kodeRekening').value = transaction.kodeRekening;
+            document.getElementById('penerimaan').value = transaction.penerimaan || '';
+            document.getElementById('pengeluaran').value = transaction.pengeluaran || '';
+        } else {
+            // Add mode
+            title.textContent = 'Tambah Transaksi';
+            form.reset();
+            // Set default date to today
+            document.getElementById('date').value = new Date().toISOString().split('T')[0];
+        }
+        
+        modal.style.display = 'block';
+    }
+
+    closeModal() {
+        document.getElementById('transactionModal').style.display = 'none';
+        this.currentEditIndex = -1;
+    }
+
+    handleFormSubmit(e) {
+        e.preventDefault();
+        
+        const formData = {
+            date: document.getElementById('date').value,
+            bukti: document.getElementById('bukti').value,
+            uraian: document.getElementById('uraian').value,
+            kodeRekening: document.getElementById('kodeRekening').value,
+            penerimaan: parseFloat(document.getElementById('penerimaan').value) || 0,
+            pengeluaran: parseFloat(document.getElementById('pengeluaran').value) || 0
+        };
+
+        if (this.currentEditIndex >= 0) {
+            // Edit existing transaction
+            this.transactions[this.currentEditIndex] = formData;
+        } else {
+            // Add new transaction
+            this.transactions.push(formData);
+        }
+
+        // Sort transactions by date
+        this.transactions.sort((a, b) => new Date(a.date) - new Date(b.date));
+        
+        this.saveTransactions();
+        this.renderTable();
+        this.closeModal();
+    }
+
+    deleteTransaction(index) {
+        if (confirm('Apakah Anda yakin ingin menghapus transaksi ini?')) {
+            this.transactions.splice(index, 1);
+            this.saveTransactions();
+            this.renderTable();
         }
     }
 

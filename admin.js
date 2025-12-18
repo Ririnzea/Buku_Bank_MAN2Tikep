@@ -655,9 +655,10 @@ class AdminPanel {
         const loginSession = localStorage.getItem('adminLoginSession');
         const loginTime = localStorage.getItem('adminLoginTime');
         
-        // Check if coming from main app (URL parameter or referrer)
+        // Check if coming from main app or login page (URL parameter or referrer)
         const urlParams = new URLSearchParams(window.location.search);
         const fromMainApp = urlParams.get('from') === 'main' || document.referrer.includes('index.html');
+        const fromLogin = urlParams.get('from') === 'login' || document.referrer.includes('login.html');
         
         if (loginSession === 'true' && loginTime) {
             const currentTime = new Date().getTime();
@@ -679,6 +680,12 @@ class AdminPanel {
         // If coming from main app and no valid session, auto-login with default credentials
         if (fromMainApp) {
             this.autoLogin();
+        }
+        
+        // If coming from login page and has valid session, show dashboard
+        if (fromLogin && loginSession === 'true') {
+            this.isLoggedIn = true;
+            this.showDashboard();
         }
     }
 
