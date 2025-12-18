@@ -10,6 +10,7 @@ class BankBookApp {
             nipBendahara: 'NIP 198005052003122003',
             logo: ''
         };
+        this.checkLoginSession();
         this.initializeApp();
         this.loadSettings();
         this.loadSampleData();
@@ -264,6 +265,34 @@ class BankBookApp {
                 cell.style.display = '';
             });
         }, 1000);
+    }
+
+    checkLoginSession() {
+        const loginSession = localStorage.getItem('adminLoginSession');
+        const loginTime = localStorage.getItem('adminLoginTime');
+        
+        if (!loginSession || loginSession !== 'true') {
+            // No login session, redirect to login page
+            window.location.href = 'login.html';
+            return;
+        }
+        
+        if (loginTime) {
+            const currentTime = new Date().getTime();
+            const sessionTime = parseInt(loginTime);
+            const sessionDuration = 24 * 60 * 60 * 1000; // 24 hours
+            
+            // Check if session expired
+            if (currentTime - sessionTime > sessionDuration) {
+                // Session expired, clear and redirect to login
+                localStorage.removeItem('adminLoginSession');
+                localStorage.removeItem('adminLoginTime');
+                window.location.href = 'login.html';
+                return;
+            }
+        }
+        
+        // Session valid, continue loading app
     }
 }
 
