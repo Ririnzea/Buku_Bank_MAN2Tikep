@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Keuangan - Buku Pembantu Bank</title>
+    <link rel="stylesheet" href="laporan.css">
+</head>
+<body>
+    <div class="print-container">
+        <!-- Header Laporan -->
+        <header class="report-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <img id="reportLogo" src="" alt="Logo Madrasah" style="display: none;">
+                </div>
+                <div class="title-section">
+                    <h1>LAPORAN KEUANGAN</h1>
+                    <h2>BUKU PEMBANTU BANK</h2>
+                    <h3 id="reportMadrasahName">MAN 2 KOTA TIDORE KEPULAUAN</h3>
+                </div>
+            </div>
+        </header>
+
+        <!-- Info Laporan -->
+        <div class="report-info">
+            <div class="info-row">
+                <div class="info-item">
+                    <strong>Periode:</strong> <span id="reportPeriode">-</span>
+                </div>
+                <div class="info-item">
+                    <strong>Tanggal Cetak:</strong> <span id="reportDate">-</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ringkasan Keuangan -->
+        <div class="summary-section">
+            <h4>RINGKASAN KEUANGAN</h4>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <div class="summary-label">Total Transaksi</div>
+                    <div class="summary-value" id="summaryTransactions">0</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Total Penerimaan</div>
+                    <div class="summary-value positive" id="summaryPenerimaan">Rp 0</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Total Pengeluaran</div>
+                    <div class="summary-value negative" id="summaryPengeluaran">Rp 0</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Saldo Akhir</div>
+                    <div class="summary-value" id="summarySaldo">Rp 0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabel Transaksi -->
+        <div class="transaction-section">
+            <h4>DETAIL TRANSAKSI</h4>
+            <table class="report-table">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Tanggal</th>
+                        <th>No Bukti</th>
+                        <th>Uraian</th>
+                        <th>Kode Rekening</th>
+                        <th>Penerimaan</th>
+                        <th>Pengeluaran</th>
+                        <th>Saldo</th>
+                    </tr>
+                </thead>
+                <tbody id="reportTableBody">
+                    <!-- Data akan diisi oleh JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Footer Laporan -->
+        <footer class="report-footer">
+            <div class="signature-section">
+                <div class="signature-left">
+                    <p>Mengetahui</p>
+                    <p><strong>Kepala Madrasah</strong></p>
+                    <div class="signature-space"></div>
+                    <p><strong id="reportKepalaName">Nurlaila Usman, S.Pd</strong></p>
+                    <p id="reportKepalaNip">NIP.196604021994032001</p>
+                </div>
+                <div class="signature-right">
+                    <p id="reportCurrentDate">Tidore, 02 Desember 2025</p>
+                    <p><strong>Bendahara BOSDA</strong></p>
+                    <div class="signature-space"></div>
+                    <p><strong id="reportBendaharaName">Sarbanun senuk, S.Pd</strong></p>
+                    <p id="reportBendaharaNip">NIP 198005052003122003</p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Print Controls -->
+        <div class="print-controls no-print">
+            <button onclick="window.print()" class="btn btn-primary">🖨️ Cetak Laporan</button>
+            <button onclick="window.close()" class="btn btn-secondary">❌ Tutup</button>
+            <button onclick="history.back()" class="btn btn-info">← Kembali</button>
+        </div>
+    </div>
+
+    <script src="laporan.js"></script>
+</body>
+</html>

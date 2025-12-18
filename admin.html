@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Buku Pembantu Bank</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-container">
+            <div class="login-header">
+                <h1>🔐 Admin Panel</h1>
+                <p>Buku Pembantu Bank - MAN 2 Kota Tidore Kepulauan</p>
+            </div>
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" required placeholder="Masukkan username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" required placeholder="Masukkan password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-login">Login</button>
+                <div class="login-info">
+                    <small>Default: admin / admin123</small>
+                </div>
+            </form>
+            <div class="back-link">
+                <a href="index.html">← Kembali ke Aplikasi Utama</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="adminDashboard" class="admin-dashboard" style="display: none;">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="header-content">
+                <h1>⚙️ Admin Panel</h1>
+                <div class="header-actions">
+                    <span id="adminWelcome">Selamat datang, Admin!</span>
+                    <button id="headerHomeBtn" class="btn btn-info">🏠 Lihat Buku Bank</button>
+                    <button id="logoutBtn" class="btn btn-danger">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="admin-nav">
+            <div class="nav-container">
+                <button class="nav-btn home-btn" id="homeBtn">🏠 HOME</button>
+                <button class="nav-btn active" data-section="dashboard">📊 Dashboard</button>
+                <button class="nav-btn" data-section="settings">⚙️ Pengaturan Madrasah</button>
+                <button class="nav-btn" data-section="transactions">💰 Kelola Transaksi</button>
+                <button class="nav-btn" data-section="reports">📋 Laporan</button>
+                <button class="nav-btn" data-section="backup">💾 Backup & Restore</button>
+                <button class="nav-btn" data-section="security">🔒 Keamanan</button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="admin-section active">
+                <h2>📊 Dashboard</h2>
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <div class="card-icon">💰</div>
+                        <div class="card-content">
+                            <h3>Total Transaksi</h3>
+                            <p id="totalTransactions">0</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">📈</div>
+                        <div class="card-content">
+                            <h3>Total Penerimaan</h3>
+                            <p id="totalPenerimaan">Rp 0</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">📉</div>
+                        <div class="card-content">
+                            <h3>Total Pengeluaran</h3>
+                            <p id="totalPengeluaran">Rp 0</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">💳</div>
+                        <div class="card-content">
+                            <h3>Saldo Akhir</h3>
+                            <p id="saldoAkhir">Rp 0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="quick-actions">
+                    <h3>Aksi Cepat</h3>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="adminPanel.goHome()">📄 Lihat Buku Bank</button>
+                        <button class="btn btn-info" onclick="window.print()">🖨️ Cetak Laporan</button>
+                        <button class="btn btn-success" id="exportDataBtn">📤 Export Data</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings" class="admin-section">
+                <h2>⚙️ Pengaturan Madrasah</h2>
+                <form id="settingsForm" class="settings-form">
+                    <div class="form-section">
+                        <h3>Logo Madrasah</h3>
+                        <div class="logo-upload-section">
+                            <div class="logo-preview-container">
+                                <div id="logoPreview" class="logo-preview">
+                                    <span>Belum ada logo</span>
+                                </div>
+                            </div>
+                            <div class="logo-actions">
+                                <input type="file" id="logoUpload" accept="image/*" style="display: none;">
+                                <button type="button" class="btn btn-info" id="uploadLogoBtn">📁 Pilih Logo</button>
+                                <button type="button" class="btn btn-danger" id="removeLogoBtn"
+                                    style="display: none;">🗑️ Hapus Logo</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Informasi Madrasah</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="namaMadrasah">Nama Madrasah:</label>
+                                <input type="text" id="namaMadrasah" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Kepala Madrasah</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="namaKepala">Nama Kepala Madrasah:</label>
+                                <input type="text" id="namaKepala" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="nipKepala">NIP Kepala Madrasah:</label>
+                                <input type="text" id="nipKepala" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Bendahara</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="namaBendahara">Nama Bendahara:</label>
+                                <input type="text" id="namaBendahara" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="nipBendahara">NIP Bendahara:</label>
+                                <input type="text" id="nipBendahara" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">💾 Simpan Pengaturan</button>
+                        <button type="button" class="btn btn-secondary" id="resetSettingsBtn">🔄 Reset ke
+                            Default</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Transactions Section -->
+            <section id="transactions" class="admin-section">
+                <h2>💰 Kelola Transaksi</h2>
+                <div class="transaction-controls">
+                    <button class="btn btn-primary" id="addTransactionBtn">➕ Tambah Transaksi</button>
+                    <button class="btn btn-danger" id="clearAllBtn">🗑️ Hapus Semua Data</button>
+                    <button class="btn btn-warning" id="loadSampleBtn">📋 Muat Data Contoh</button>
+                </div>
+                <div class="transaction-table-container">
+                    <table id="transactionTable" class="transaction-table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Tanggal</th>
+                                <th>No Bukti</th>
+                                <th>Uraian</th>
+                                <th>Kode Rekening</th>
+                                <th>Penerimaan</th>
+                                <th>Pengeluaran</th>
+                                <th>Saldo</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionTableBody">
+                            <!-- Data akan diisi oleh JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Reports Section -->
+            <section id="reports" class="admin-section">
+                <h2>📋 Laporan</h2>
+                <div class="report-filters">
+                    <div class="filter-group">
+                        <label for="reportStartDate">Dari Tanggal:</label>
+                        <input type="date" id="reportStartDate">
+                    </div>
+                    <div class="filter-group">
+                        <label for="reportEndDate">Sampai Tanggal:</label>
+                        <input type="date" id="reportEndDate">
+                    </div>
+                    <button class="btn btn-info" id="generateReportBtn">📊 Generate Laporan</button>
+                </div>
+                <div id="reportResult" class="report-result">
+                    <!-- Hasil laporan akan ditampilkan di sini -->
+                </div>
+            </section>
+
+            <!-- Backup Section -->
+            <section id="backup" class="admin-section">
+                <h2>💾 Backup & Restore</h2>
+                <div class="backup-section">
+                    <div class="backup-card">
+                        <h3>📤 Backup Data</h3>
+                        <p>Simpan semua data transaksi dan pengaturan ke file</p>
+                        <button class="btn btn-success" id="backupBtn">💾 Download Backup</button>
+                    </div>
+                    <div class="backup-card">
+                        <h3>📥 Restore Data</h3>
+                        <p>Pulihkan data dari file backup</p>
+                        <input type="file" id="restoreFile" accept=".json" style="display: none;">
+                        <button class="btn btn-warning" id="restoreBtn">📁 Pilih File Backup</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Security Section -->
+            <section id="security" class="admin-section">
+                <h2>🔒 Keamanan</h2>
+                <form id="securityForm" class="security-form">
+                    <div class="form-section">
+                        <h3>Ubah Kredensial Admin</h3>
+                        <div class="form-group">
+                            <label for="newUsername">Username Baru:</label>
+                            <input type="text" id="newUsername" placeholder="Masukkan username baru">
+                        </div>
+                        <div class="form-group">
+                            <label for="currentPassword">Password Saat Ini:</label>
+                            <input type="password" id="currentPassword" placeholder="Masukkan password saat ini">
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">Password Baru:</label>
+                            <input type="password" id="newPassword" placeholder="Masukkan password baru">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Konfirmasi Password Baru:</label>
+                            <input type="password" id="confirmPassword" placeholder="Konfirmasi password baru">
+                        </div>
+                        <button type="submit" class="btn btn-primary">🔒 Update Kredensial</button>
+                    </div>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <!-- Transaction Modal -->
+    <div id="transactionModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 id="modalTitle">Tambah Transaksi</h3>
+            <form id="transactionForm">
+                <div class="form-group">
+                    <label for="transactionDate">Tanggal:</label>
+                    <input type="date" id="transactionDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="transactionBukti">No Bukti:</label>
+                    <input type="text" id="transactionBukti" required>
+                </div>
+                <div class="form-group">
+                    <label for="transactionUraian">Uraian:</label>
+                    <input type="text" id="transactionUraian" required>
+                </div>
+                <div class="form-group">
+                    <label for="transactionKode">Kode Rekening:</label>
+                    <input type="text" id="transactionKode">
+                </div>
+                <div class="form-group">
+                    <label for="transactionPenerimaan">Penerimaan:</label>
+                    <input type="number" id="transactionPenerimaan" min="0" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="transactionPengeluaran">Pengeluaran:</label>
+                    <input type="number" id="transactionPengeluaran" min="0" step="0.01">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="button" class="btn btn-secondary" id="cancelTransactionBtn">Batal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+
+</html>
